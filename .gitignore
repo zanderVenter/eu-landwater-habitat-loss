@@ -1,0 +1,19 @@
+# Secrets / local config
+.env
+
+# Agent instructions (internal, not for publication)
+CLAUDE.md
+
+# Pre-publication manuscript drafts
+manuscript/
+
+# R
+.Rhistory
+.Rproj.user/
+.RData
+*.Rproj
+Rplots.pdf
+
+# OS junk
+Thumbs.db
+.DS_Store
