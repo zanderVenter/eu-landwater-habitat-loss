@@ -26,9 +26,6 @@ This document walks through all three.
 - **GISCO country boundaries** and **Natural Earth** - country polygons for
   the country-level accounting (Table 1, S2, Figure 2) and basemaps.
 
-See `manuscript/supplement.docx` (gitignored, local only) Table S1 for the
-full CLC-to-MAES ecosystem typology crosswalk.
-
 ## Pipeline overview
 
 ```
@@ -48,9 +45,6 @@ which you then download by hand into `DATA_DIR`.
 Google Earth Engine JS scripts are not run from the command line - open
 [code.earthengine.google.com](https://code.earthengine.google.com), paste
 each script's contents into a new script tab, and click Run.
-
-**Ask before running any of these** - see `CLAUDE.md`. Full continental
-exports consume meaningful EECU budget.
 
 Run in this order:
 
@@ -129,16 +123,6 @@ install.packages(c(
 remotes::install_github("hughjonesd/ggmagnify")
 ```
 
-The original script used `ggpubr::background_image()`/`ggarrange()` in
-`R/01_figure1_overview.R`, but `ggpubr` pulls in a large `car`/`rstatix`/
-`lme4` dependency chain (which on Linux needs the system library
-`libnlopt`, e.g. `sudo apt-get install libnlopt-dev`) for two functions
-with trivial equivalents already used elsewhere in this pipeline -
-`ggplot2::annotation_raster()` and `gridExtra::grid.arrange()`. `ggpubr` has
-been dropped entirely rather than worked around; see the comment at the top
-of `R/01_figure1_overview.R`. `ggfx` is `ggmagnify`'s (optional) dependency
-for its `shadow=TRUE` rendering, used in that same script.
-
 Copy `.env` (see the template already in this repo) and confirm
 `DATA_DIR`/`OUTPUTS_DIR` point at the right places for your machine.
 
@@ -168,27 +152,6 @@ prerequisites, so running e.g. `R/06_figure5_l3_drivers.R` alone re-sources
 
 All figures/tables are written to `OUTPUTS_DIR` (see `.env`), never into
 the repo.
-
-## Known gaps
-
-- **Coastal buffer comment/code mismatch**: `01_strata_img_generate.js`'s
-  comment says the coastal zone is buffered "1500m inland and 100m into
-  water", but the water-side buffer line is commented out in the code -
-  only the 1500m inland buffer is actually applied. Flagged inline with a
-  `TODO(zander)` rather than silently changed either way - needs your
-  confirmation of which was actually used for the submitted results.
-- **`clc_areas_consumption_formation_2000_2018_countries` export**: correctly
-  implemented in `04_areas_extract_countries.js` and downloadable, but not
-  currently read by any R script - the accounting table derives
-  consumption/formation directly from `clc_areas_change_2000_2018_countries.csv`
-  instead. Kept as an independent cross-check, not a pipeline dependency.
-- **GLAD data & `legacy.R`**: not part of the current pipeline (see
-  `CLAUDE.md`) - earmarked for a possible response to a reviewer's
-  resolution-sensitivity concern (CLC's 100m MMU vs. finer products for
-  narrow riparian corridors) in the next revision pass, not dead code.
-- **`maxCellsToExport` smoke-test default**: `01`/`02`'s committed default
-  only exports 2 grid cells - a deliberate cheap test, not a full run. See
-  Step 1 above.
 
 ## Verification
 
